@@ -1,0 +1,22 @@
+{
+    "name": "iceqi/avata-php",
+    "description": "文昌链php操作",
+    "type": "library",
+    "require": {
+        "php": ">=5.5",
+        "guzzlehttp/guzzle": ">=6.0"
+    },
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Iceqi\\AvataPhp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "iceqi",
+            "email": "95857548@qq.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
