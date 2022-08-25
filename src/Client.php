@@ -11,7 +11,6 @@ class Client
 
     private $_apiKey;
     private $_secret;
-
     private $endpoint;
     private $_devUri = "https://stage.apis.avata.bianjie.ai";
     private $_proUri = "https://apis.avata.bianjie.ai";
@@ -60,14 +59,18 @@ class Client
         $params = ['path_url' => $this->uri];
 
         if ($this->method == "get") {
+            if(isset($this->params) && $this->params){
 
-            foreach ($this->params as $key => $value) {
-                $params["query_{$key}"] = strval($value);
+                foreach ($this->params as $key => $value) {
+                    $params["query_{$key}"] = strval($value);
+                }
             }
         } else {
 
-            foreach ($this->params as $key => $value) {
-                $params["body_{$key}"] = $value;
+            if(isset($this->params) && $this->params) {
+                foreach ($this->params as $key => $value) {
+                    $params["body_{$key}"] = $value;
+                }
             }
         }
 
@@ -88,7 +91,7 @@ class Client
     public function request(BaseApis $baseApis)
     {
         $query = $baseApis->getQuery();
-        $this->params = $query["params"];
+        $this->params = isset($query["params"]) && $query["params"] ? $query["params"] :"";
         $this->method = $query["method"];
         $this->uri = $query["uri"];
         $this->buildSign();
@@ -100,12 +103,18 @@ class Client
         ];
         try {
             $client = new GuzzleHttpClient(["base_uri" => $this->endpoint, "headers" => $headers, "debug" => false]);
-            $data = [
-                "json" => $query["params"]
-            ];
+            $data = [];
+
             if ($query["method"] == "get") {
+                if(isset($query["params"]) && $query["params"]){
+                    $data = [
+                        "query" => $query["params"]
+                    ];
+                }
+            }
+            if(isset( $query["params"]) &&  $query["params"]){
                 $data = [
-                    "query" => $query["params"]
+                    "json" => $query["params"]
                 ];
             }
             $response = $client->request($query["method"], $query["uri"], $data);
