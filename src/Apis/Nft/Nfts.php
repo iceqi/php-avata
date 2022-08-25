@@ -9,14 +9,14 @@ class Nfts extends BaseApis
 
     public function create($class_id)
     {
-        $this->_uri = sprintf("/v1beta1/ntf/nfts/%s" . $class_id);
+        $this->_uri = sprintf("/v1beta1/nft/nfts/%s" , $class_id);
         return $this;
     }
 
     public function info($class_id, $nft_id)
     {
 
-        $this->_uri = sprintf("/v1beta1/ntf/nfts/%s/%s" . $class_id, $nft_id);
+        $this->_uri = sprintf("/v1beta1/nft/nfts/%s/%s",$class_id, $nft_id);
         $this->_method = "get";
         return $this;
     }
@@ -46,7 +46,7 @@ class Nfts extends BaseApis
 
     public function batchCreate($class_id)
     {
-        $this->_uri = "/v1beta1/ntf/batch/nfts/" . $class_id;
+        $this->_uri = sprintf("/v1beta1/nft/batch/nfts/%s",$class_id);
         return $this;
     }
 
@@ -76,7 +76,7 @@ class Nfts extends BaseApis
 
     public function queryLists()
     {
-        $this->_uri = sprintf("/v1beta1/ntf/nfts");
+        $this->_uri = sprintf("/v1beta1/nft/nfts");
         $this->_method = "get";
         return $this;
     }
@@ -84,7 +84,7 @@ class Nfts extends BaseApis
 
     public function history($class_id, $nft_id)
     {
-        $this->_uri = sprintf("/v1beta1/ntf/nfts/%s/%s/history" . $class_id, $nft_id);
+        $this->_uri = sprintf("/v1beta1/nft/nfts/%s/%s/history",$class_id, $nft_id);
         $this->_method = "get";
         return $this;
     }

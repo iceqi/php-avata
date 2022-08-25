@@ -22,7 +22,7 @@ class Classes extends BaseApis
 
     public function queryList()
     {
-        $this->_uri = "/v1beta1/nft/classes/";
+        $this->_uri = "/v1beta1/nft/classes";
         $this->_method = "get";
         return $this;
     }
