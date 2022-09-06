@@ -11,5 +11,6 @@ class Tx extends BaseApis
     {
         $this->_uri = sprintf("/v1beta1/tx/%s", $operation_id);
         $this->_method = "get";
+        return $this;
     }
 }

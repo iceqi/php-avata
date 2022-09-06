@@ -11,6 +11,7 @@ class Client
 
     private $_apiKey;
     private $_secret;
+
     private $endpoint;
     private $_devUri = "https://stage.apis.avata.bianjie.ai";
     private $_proUri = "https://apis.avata.bianjie.ai";
@@ -21,11 +22,9 @@ class Client
     private $uri;
     private $_result = [];
     private $_debug;
-    private $verify_ssl;
 
-    public function __construct($apiKey, $secret, $isDev = true, $debug = false, $verify_ssl = true)
+    public function __construct($apiKey, $secret, $isDev = true,$debug = false)
     {
-        $this->verify_ssl = $verify_ssl;
         $this->_debug = $debug;
         $this->_apiKey = $apiKey;
         $this->_secret = $secret;
@@ -61,7 +60,7 @@ class Client
         $params = ['path_url' => $this->uri];
 
         if ($this->method == "get") {
-            if (isset($this->params) && $this->params) {
+            if(isset($this->params) && $this->params){
 
                 foreach ($this->params as $key => $value) {
                     $params["query_{$key}"] = strval($value);
@@ -69,7 +68,7 @@ class Client
             }
         } else {
 
-            if (isset($this->params) && $this->params) {
+            if(isset($this->params) && $this->params) {
                 foreach ($this->params as $key => $value) {
                     $params["body_{$key}"] = $value;
                 }
@@ -93,7 +92,7 @@ class Client
     public function request(BaseApis $baseApis)
     {
         $query = $baseApis->getQuery();
-        $this->params = isset($query["params"]) && $query["params"] ? $query["params"] : "";
+        $this->params = isset($query["params"]) && $query["params"] ? $query["params"] :"";
         $this->method = $query["method"];
         $this->uri = $query["uri"];
         $this->buildSign();
@@ -104,17 +103,17 @@ class Client
             "X-Api-Key" => "{$this->_apiKey}",
         ];
         try {
-            $client = new GuzzleHttpClient(["base_uri" => $this->endpoint, "headers" => $headers, "debug" => $this->_debug, "verify" => $this->verify_ssl]);
+            $client = new GuzzleHttpClient(["base_uri" => $this->endpoint, "headers" => $headers, "debug" => $this->_debug]);
             $data = [];
 
             if ($query["method"] == "get") {
-                if (isset($query["params"]) && $query["params"]) {
+                if(isset($query["params"]) && $query["params"]){
                     $data = [
                         "query" => $query["params"]
                     ];
                 }
             }
-            if (isset($query["params"]) && $query["params"]) {
+            if(isset( $query["params"]) &&  $query["params"]){
                 $data = [
                     "json" => $query["params"]
                 ];
@@ -122,21 +121,20 @@ class Client
             $response = $client->request($query["method"], $query["uri"], $data);
             if ($response->getStatusCode() == 200) {
                 $this->_result["code"] = 200;
-                $this->_result["status"] = "success";
+                $this->_result["status"] ="success";
                 $this->_result["data"] = $response->getBody()->getContents();
             }
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 $this->_result["code"] = $e->getResponse()->getStatusCode();
-                $this->_result["status"] = "error";
+                $this->_result["status"] ="error";
                 $this->_result["data"] = $e->getResponse()->getBody()->getContents();
             }
         }
         return $this;
     }
 
-    public function result()
-    {
+    public function result(){
         return $this->_result;
     }
 

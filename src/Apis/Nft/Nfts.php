@@ -18,6 +18,7 @@ class Nfts extends BaseApis
     {
 
         $this->_uri = sprintf("/v1beta1/nft/nfts/%s/%s", $class_id, $nft_id);
+
         $this->_method = "get";
         return $this;
     }
